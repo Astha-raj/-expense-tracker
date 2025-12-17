@@ -1,0 +1,171 @@
+{% extends 'expenses/base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'expenses/css/dashboard.css' %}">
+
+{% block content %}
+<div class="container-fluid mt-4 dashboard-wrapper">
+
+    <!-- PAGE TITLE -->
+    <h3 class="mb-1">Dashboard</h3>
+    <p class="text-muted">Welcome, {{ user.username }}!</p>
+
+    <!-- ================= SUMMARY CARDS ================= -->
+    <div class="row g-4 my-3">
+
+        <div class="col-12 col-md-4">
+            <div class="card dashboard-card primary-card">
+                <h6>Total Spent (This Month)</h6>
+                <h3>₹{{ total_expense }}</h3>
+            </div>
+        </div>
+
+        {% if budget %}
+        <div class="col-12 col-md-4">
+            <div class="card dashboard-card success-card">
+                <h6>Monthly Budget</h6>
+                <h3>₹{{ budget }}</h3>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+            <div class="card dashboard-card {% if overspent %}danger-card{% else %}warning-card{% endif %}">
+                <h6>Remaining</h6>
+                <h3>₹{{ remaining }}</h3>
+                {% if overspent %}
+                    <small class="text-light">⚠ Overspent this month</small>
+                {% endif %}
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12 col-md-4">
+            <div class="card dashboard-card secondary-card">
+                <h6>Budget Status</h6>
+                <h5>Not Set</h5>
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <!-- ================= CHARTS ROW ================= -->
+    <div class="row g-4 mt-2">
+
+        <!-- CATEGORY PIE CHART -->
+        <div class="col-12 col-lg-6">
+            <div class="card dashboard-card chart-card">
+                <h5 class="mb-3">Category Wise Spend</h5>
+                <div class="chart-wrapper">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- WEEKLY BAR CHART -->
+        <div class="col-12 col-lg-6">
+            <div class="card dashboard-card chart-card">
+                <h5 class="mb-3">Last 7 Days Expenses</h5>
+                <div class="chart-wrapper">
+                    <canvas id="weeklyChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ================= CHART.JS ================= -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    /* ---------- CATEGORY PIE CHART ---------- */
+    const categoryLabels = {{ category_labels|safe }};
+    const categoryValues = {{ category_values|safe }};
+
+    // Debug logs: inspect what data is rendered into the template
+    console.log('categoryLabels', categoryLabels);
+    console.log('categoryValues', categoryValues);
+
+    if (categoryLabels.length > 0) {
+        const cs = getComputedStyle(document.body);
+        const textColor = cs.getPropertyValue('--text-color').trim() || '#eaeaea';
+        const gridColor = cs.getPropertyValue('--chart-grid-color').trim() || 'rgba(255,255,255,0.06)';
+        const datasetDefault = cs.getPropertyValue('--chart-dataset-color').trim() || '#4e79a7';
+
+        const pieColors = [
+            '#4e79a7', '#f28e2b', '#e15759', '#76b7b2', '#59a14f', '#edc949'
+        ];
+
+        new Chart(document.getElementById('categoryChart'), {
+            type: 'pie',
+            data: {
+                labels: categoryLabels,
+                datasets: [{
+                    data: categoryValues,
+                    backgroundColor: pieColors,
+                    borderColor: 'rgba(0,0,0,0.08)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: { color: textColor }
+                    }
+                }
+            }
+        });
+    }
+
+    /* ---------- WEEKLY BAR CHART ---------- */
+    const weeklyLabels = {{ weekly_labels|safe }};
+    const weeklyValues = {{ weekly_values|safe }};
+
+    // Debug logs: inspect weekly chart data and detect empty arrays or JS errors
+    console.log('weeklyLabels', weeklyLabels);
+    console.log('weeklyValues', weeklyValues);
+
+    if (weeklyLabels.length > 0) {
+        const cs = getComputedStyle(document.body);
+        const textColor = cs.getPropertyValue('--text-color').trim() || '#eaeaea';
+        const gridColor = cs.getPropertyValue('--chart-grid-color').trim() || 'rgba(255,255,255,0.06)';
+        const datasetDefault = cs.getPropertyValue('--chart-dataset-color').trim() || '#4e79a7';
+
+        new Chart(document.getElementById('weeklyChart'), {
+            type: 'bar',
+            data: {
+                labels: weeklyLabels,
+                datasets: [{
+                    label: 'Daily Spend',
+                    data: weeklyValues,
+                    backgroundColor: datasetDefault,
+                    borderRadius: 6,
+                    barPercentage: 0.6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        ticks: { color: textColor },
+                        grid: { color: gridColor }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: { color: textColor },
+                        grid: { color: gridColor }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: textColor }
+                    }
+                }
+            }
+        });
+    }
+</script>
+{% endblock %}

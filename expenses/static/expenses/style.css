@@ -1,0 +1,267 @@
+/* =======================
+   GLOBAL STYLES
+======================= */
+
+:root{
+    --bg-color: #f4f6f9;
+    --surface-color: #ffffff;
+    --text-color: #1f2937;
+    --muted-color: #6b7280;
+    --card-bg: linear-gradient(135deg, #4e73df, #224abe);
+    --card-text: #ffffff;
+    --primary: #4e73df;
+    --success: #1cc88a;
+    --warning: #f6c23e;
+    --input-bg: #ffffff;
+    --input-border: #d1d5db;
+    --card-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    --chart-grid-color: rgba(0,0,0,0.08);
+    --chart-dataset-color: #4e79df;
+    --pastel-edit: #ffd6bf; /* soft peach */
+    --pastel-edit-border: #ffb997;
+    --pastel-delete: #ffd1d1; /* soft pink */
+    --pastel-delete-border: #ff9aa2;
+}
+
+/* Dark theme variables (prefers or explicit) */
+@media (prefers-color-scheme: dark) {
+    :root{
+        --bg-color: #08090b;
+        --surface-color: linear-gradient(145deg, #020617, #0f172a);
+        --text-color: #e6eef8;
+        --muted-color: #9ca3af;
+        --card-bg: linear-gradient(145deg, #020617, #0b1220);
+        --card-text: #eaeaea;
+        --input-bg: #0b1220;
+        --input-border: rgba(255,255,255,0.06);
+        --card-shadow: 0 12px 35px rgba(0,0,0,0.45);
+        --chart-grid-color: rgba(255,255,255,0.04);
+        --chart-dataset-color: #4e79a7;
+        --pastel-edit: #3b2b1f; /* darker peach for dark */
+        --pastel-edit-border: #4e3a2b;
+        --pastel-delete: #3a2024; /* darker pink for dark */
+        --pastel-delete-border: #4a2a2f;
+    }
+}
+
+/* Allow explicit theme via body class */
+body.theme-light {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+body.theme-dark {
+    background-color: #07080a;
+    color: var(--text-color);
+}
+
+body {
+    background-color: var(--bg-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+}
+
+.dashboard-wrapper {
+    padding-bottom: 40px;
+}
+
+/* =======================
+   PAGE TITLE
+======================= */
+
+h3 {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.text-muted {
+    font-size: 14px;
+}
+
+/* =======================
+   DASHBOARD CARDS
+======================= */
+
+.dashboard-card {
+    padding: 20px;
+    border-radius: 14px;
+    color: var(--card-text);
+    box-shadow: var(--card-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    background: var(--card-bg);
+}
+
+.dashboard-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-card h6 {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: var(--muted-color);
+}
+
+.dashboard-card h3 {
+    font-size: 28px;
+    margin: 0;
+}
+
+/* =======================
+   CARD COLORS
+======================= */
+
+.primary-card {
+    background: linear-gradient(135deg, var(--primary), #224abe);
+}
+
+.success-card {
+    background: linear-gradient(135deg, var(--success), #13855c);
+}
+
+.warning-card {
+    background: linear-gradient(135deg, var(--warning), #dda20a);
+}
+
+/* =======================
+   TABLE STYLES
+======================= */
+
+.table {
+    background: var(--surface-color);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.table thead {
+    background-color: var(--primary);
+    color: #fff;
+}
+
+.table th,
+.table td {
+    padding: 12px 14px;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+/* =======================
+   BUTTONS
+======================= */
+
+.btn {
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.btn-primary {
+    background-color: #4e73df;
+    border-color: #4e73df;
+}
+
+.btn-primary:hover {
+    background-color: #224abe;
+    border-color: #224abe;
+}
+
+.btn-danger {
+    border-radius: 8px;
+}
+
+/* =======================
+   FORMS
+======================= */
+
+.form-control {
+    border-radius: 8px;
+    font-size: 14px;
+    padding: 10px 12px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-color);
+}
+
+/* Selects (consistent input borders) */
+.form-select {
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    color: var(--text-color);
+    border-radius: 8px;
+    padding: 8px 10px;
+}
+
+/* Increase contrast for labels and table text */
+.form-label,
+label {
+    color: var(--muted-color);
+}
+
+.table th, .table td {
+    color: var(--text-color);
+}
+
+/* Pastel action buttons used on My Expenses page */
+.btn-edit {
+    background-color: var(--pastel-edit);
+    border: 1px solid var(--pastel-edit-border);
+    color: #1f2937;
+}
+.btn-edit:hover {
+    background-color: var(--pastel-edit-border);
+    color: #fff;
+}
+
+.btn-delete {
+    background-color: var(--pastel-delete);
+    border: 1px solid var(--pastel-delete-border);
+    color: #1f2937;
+}
+.btn-delete:hover {
+    background-color: var(--pastel-delete-border);
+    color: #fff;
+}
+
+/* Ensure small buttons look consistent */
+.btn-sm.btn-edit, .btn-sm.btn-delete {
+    padding: .25rem .5rem;
+    font-size: .8rem;
+}
+
+.form-control::placeholder { color: var(--muted-color); }
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: var(--primary);
+}
+
+/* =======================
+   UTILITIES
+======================= */
+
+.card {
+    border: none;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mt-4 {
+    margin-top: 1.5rem;
+}
+
+/* =======================
+   RESPONSIVE
+======================= */
+
+@media (max-width: 768px) {
+    .dashboard-card h3 {
+        font-size: 22px;
+    }
+}
+
+
+
+

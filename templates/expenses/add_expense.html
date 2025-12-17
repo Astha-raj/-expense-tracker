@@ -1,0 +1,44 @@
+{% extends 'expenses/base.html' %}
+{% block title %}Add Expense{% endblock %}
+
+{% block content %}
+<h3>Add Expense</h3>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label>Amount</label>
+        <input type="number" name="amount" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Date</label>
+        <input type="date" name="date" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+        <label>Category</label>
+        <select name="category" class="form-control">
+            <option value="">-- Select Category --</option>
+            {% for cat in categories %}
+                <option value="{{ cat.id }}">{{ cat.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Or Add New Category</label>
+        <input type="text" name="new_category" class="form-control"
+               placeholder="Enter new category (optional)">
+    </div>
+
+    <div class="mb-3">
+        <label>Note</label>
+        <textarea name="note" class="form-control"></textarea>
+    </div>
+
+    <button class="btn btn-primary">Add Expense</button>
+</form>
+
+{% endblock %}

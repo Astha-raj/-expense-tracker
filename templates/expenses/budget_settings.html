@@ -1,0 +1,21 @@
+{% extends 'expenses/base.html' %}
+{% block title %}Budget Settings{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3>Budget Settings</h3>
+    <p class="text-muted">Update your monthly budget for better tracking</p>
+    
+    <form method="POST" class="w-50">
+        {% csrf_token %}
+        
+        <label class="form-label">Monthly Budget Amount (₹)</label>
+        <input type="number" step="0.01" name="amount" 
+               class="form-control"
+               value="{{ budget.amount }}" required>
+        
+        <br>
+        <button type="submit" class="btn btn-success">Save</button>
+    </form>
+</div>
+{% endblock %}
